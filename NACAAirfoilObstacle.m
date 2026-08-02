@@ -41,14 +41,14 @@ classdef NACAAirfoilObstacle < handle
 
             obj.calculateFunctions(aoa, L);            
 
-            [X,Y] = meshgrid(x-1:x+L+1, 1:h);
+            [X,Y] = meshgrid(x-1:x+L*cosd(aoa)+1, 1:h);
             X = (X-x); Y = -(Y-y);
             obsu = sign(obj.wu(X,Y));
             obsl = sign(obj.wl(X,Y));
             obs = nan(h,l);
-            obs(:,x-1:x+L+1) = abs(.5*(obsu+obsl)) == 0;
+            obs(:,x-1:x+L*cosd(aoa)+1) = abs(.5*(obsu+obsl)) == 0;
             obs(:,1:x-1) = false;
-            obs(:,x+L+1:l) = false;
+            obs(:,x+L*cosd(aoa)+1:l) = false;
             
 
             % figure;

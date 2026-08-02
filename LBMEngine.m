@@ -108,7 +108,7 @@ classdef LBMEngine < handle
             end
 
             wtp = obj.setupPlot();
-            clim(wtp.Parent, [0.32 0.34]);
+            clim(wtp.Parent, [0.328 0.332]);
             
             for T = 0:t
                 obj.calcRhoVel();
@@ -307,13 +307,13 @@ classdef LBMEngine < handle
             test = LBMEngine(Nx, Ny);
 
             naca4412 = NACAAirfoilObstacle(4412);
-            disp("naca4412")
-            obs = naca4412.makeObstacle(225,225, Nx,Ny, 250, 5);
+            disp("naca aifoil")
+            obs = naca4412.makeObstacle(225,225, Nx,Ny, 250, 25);
             disp("makeObstacle")
             test.addObstacle(obs);
             
             disp("run")
-            test.runPressure(25000);
+            test.runVorticity(25000);
 
         end
 
