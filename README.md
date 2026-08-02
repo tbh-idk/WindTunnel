@@ -3,13 +3,16 @@
 *NACA 4412 airfoil at 25° angle of attack run on vorticity*
 
 
+----
+This fluid simulation uses the Lattice Boltzmann Method (LBM).
+ * Zou-He inlet condition
+ * bounce back for the walls
+ * zero gradient outlet
+
+run `LBMEngine.main()` (edit parameters in file)
+
+NACA airfoils (4-digits) can be created and added as an obstacle
 
 
-run `LBMEngine.main()` 
 
-edit parameters in file
-
-NACA airfoils (4-digits)
-
-
-**This is not validated**
+**This has not been validated**
