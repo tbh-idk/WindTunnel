@@ -5,6 +5,7 @@
 
 ----
 This fluid simulation uses the Lattice Boltzmann Method (LBM).
+ * BGK collision (changing to MRT in progress maybe)
  * Zou-He inlet condition
  * bounce back for the walls
  * zero gradient outlet
