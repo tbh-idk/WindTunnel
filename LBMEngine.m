@@ -90,7 +90,7 @@ classdef LBMEngine < handle
             obj.airfoil = airfoil;
             obj.airfoilOrigin = [x;y];
             obj.obstacle = airfoil.makeObstacle(x,y, obj.Nx,obj.Ny, L, aoa);
-            obj.obs3d = repmat(obs, [1 1 9]);
+            obj.obs3d = repmat(obj.obstacle, [1 1 9]);
             obj.Re = obj.u0x*L/obj.nu;
         end
 
