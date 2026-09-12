@@ -35,7 +35,11 @@ classdef LBMEngine < handle
 
         tau double = 0.55; % relaxation time
 
+        airfoil NACAAirfoil;
+        airfoilOrigin (2,1) double; % [x;y]
+
         obstacle (:,:) logical; % thing to be tested in wind tunnel
+        obs3d (:,:,9) logical;
 
     end
 
@@ -72,6 +76,22 @@ classdef LBMEngine < handle
                 obs (:,:) logical;
             end
             obj.obstacle = obs; %repmat(obs, [1 1 9]);
+            obj.obs3d = repmat(obs, [1 1 9]);
+        end
+        function addAirfoil(obj, airfoil, x, y, L, aoa)
+            arguments
+                obj 
+                airfoil NACAAirfoil
+                x double
+                y double
+                L double
+                aoa double
+            end
+            obj.airfoil = airfoil;
+            obj.airfoilOrigin = [x;y];
+            obj.obstacle = airfoil.makeObstacle(x,y, obj.Nx,obj.Ny, L, aoa);
+            obj.obs3d = repmat(obs, [1 1 9]);
+            obj.Re = obj.u0x*L/obj.nu;
         end
 
 
