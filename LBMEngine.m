@@ -222,17 +222,18 @@ classdef LBMEngine < handle
         end
 
         function calcFeq(obj)
-
             u2 = obj.ux.^2+obj.uy.^2;
+            fEqLocal = obj.feq;
 
             for i = 1:9
                 cdotu = obj.cx(i)*obj.ux+obj.cy(i)*obj.uy;
-                obj.feq(:,:,i) = obj.rho .* obj.w(i) .* ...
+                fEqLocal(:,:,i) = obj.rho .* obj.w(i) .* ...
                     (1 + (cdotu)/(obj.c^2) ...
                        + (cdotu).^2/(2*obj.c^4) ...
                        - (u2)/(2*obj.c^2));
             end
 
+            obj.feq = fEqLocal;
         end
 
         function collision(obj)
@@ -244,12 +245,16 @@ classdef LBMEngine < handle
         end
 
         function stream(obj)
+            fLocal = obj.f;
+            fStarLocal = obj.fstar;
+            
             for i = 1:9
-                obj.f(:,:,i) = circshift(obj.fstar(:,:,i), [obj.cy(i), obj.cx(i)]);
+                fLocal(:,:,i) = circshift(fStarLocal(:,:,i), [obj.cy(i), obj.cx(i)]);
             end
+            obj.f = fLocal;
         end
 
-        function applyBC(obj)
+        function applyBC(obj) % Zou-He
             % inlet (main)
             rho_inlet = (1/(1-obj.u0x)) * (obj.f(:,1,1)+obj.f(:,1,3)+obj.f(:,1,5) + 2*(obj.f(:,1,4)+obj.f(:,1,7)+obj.f(:,1,8)));
             obj.f(:,1,2) = obj.f(:,1,4) + (2/3)*rho_inlet.*obj.u0x;
@@ -277,10 +282,13 @@ classdef LBMEngine < handle
 
 
             % walls
+            fLocal = obj.f;
+            fStarLocal = obj.fstar;
             for i = 1:9
-                obj.f(1,:, i) = obj.fstar(1,:, obj.opp(i));
-                obj.f(end,:, i) = obj.fstar(end,:, obj.opp(i));
+                fLocal(1,:, i) = fStarLocal(1,:, obj.opp(i));
+                fLocal(end,:, i) = fStarLocal(end,:, obj.opp(i));
             end
+            obj.f = fLocal;
 
             % obstacle          
             % bounceBack = zeros(obj.Ny,obj.Nx,9);
