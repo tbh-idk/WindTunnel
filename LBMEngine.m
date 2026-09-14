@@ -236,12 +236,14 @@ classdef LBMEngine < handle
             obj.feq = fEqLocal;
         end
 
+        function omega = BGK(obj)
+            omega = - (1/obj.tau) * (obj.f-obj.feq);
+        end
         function collision(obj)
-            obj.fstar = obj.f - (1/obj.tau) * (obj.f-obj.feq);
+            obj.fstar = obj.f + BGK(obj);
 
             bounceBack = obj.f(:,:,obj.opp);
-            obs3d = repmat(obj.obstacle, [1 1 9]);
-            obj.fstar(obs3d) = bounceBack(obs3d);
+            obj.fstar(obj.obs3d) = bounceBack(obj.obs3d);
         end
 
         function stream(obj)
